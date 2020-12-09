@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+</head>
+
+<body>
+
+
+<img id="qrcode" src="" alt="">
+
+
+</body>
+
+<script>
+    let ws = null;
+    const SOCKET_URL = "ws://localhost:8086/socketServer/"
+    $.ajax({
+        url: "http://localhost:3000/api/wx/qrcode",
+        type: 'get',
+        success: function (data) {
+            // $('#qrcode').attr("src", "/image/" + data + ".jpeg")
+            webSocketConnect(data)
+
+        }
+    })
+
+    function webSocketConnect(clientId) {
+        if ('WebSocket' in window) {
+            //ws = new WebSocket("ws://www.isuyu.cn:8086/socketServer/"+$("#username").val());
+            ws = new WebSocket(SOCKET_URL + clientId);
+        } else if ('MozWebSocket' in window) {
+            //ws = new MozWebSocket("ws://www.isuyu.cn:8086/socketServer/"+$("#username").val());
+            ws = new WebSocket(SOCKET_URL + clientId);
+        } else {
+            alert("该浏览器不支持websocket");
+        }
+
+        ws.onmessage = function (evt) {
+
+            window.location.href = 'me.html'
+
+
+        };
+    }
+
+
+</script>
+
+</html>
